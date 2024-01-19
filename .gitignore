@@ -1,0 +1,25 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+/back_pain/venv
+
+# dependencies
+/front_shit/node_modules
+/front_shit/.pnp
+/front_shit/.pnp.js
+
+# testing
+/front_shit/coverage
+
+# production
+/front_shit/build
+
+# misc
+/front_shit/.DS_Store
+/front_shit/.env.local
+/front_shit/.env.development.local
+/front_shit/.env.test.local
+/front_shit/.env.production.local
+
+/front_shit/npm-debug.log*
+/front_shit/yarn-debug.log*
+/front_shit/yarn-error.log*
