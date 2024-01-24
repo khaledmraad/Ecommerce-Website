@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Input/Button";
 import axios from 'axios';
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
 export default function Signup(){
@@ -15,6 +15,7 @@ export default function Signup(){
 
 
     function credChg(event){
+        console.log(userCred);
         var {value,name}=event.target;
         setUserCred((prevValue)=>{
             return {
@@ -28,7 +29,7 @@ export default function Signup(){
 
     async function pwnUser(event){
         try{
-            await axios.post("http://localhost:5000/signup",userCred)
+                await axios.post("http://localhost:5000/signup",userCred)
             .then((res)=>{
                 console.log(res);
                 if (res.status==200){
@@ -61,6 +62,7 @@ export default function Signup(){
             <br/>
 
             <button val="SignUp" onClick={pwnUser}>SignUp</button>
+            
         </>
     )
 }

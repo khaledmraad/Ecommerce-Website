@@ -4,7 +4,9 @@ import Button from "../Input/Button";
 import axios from "axios";
 
 
+
 export default function Login(){
+
 
     const [userInput,setUserInput]=useState({
         userName:"",
@@ -34,6 +36,12 @@ export default function Login(){
         }
 
         catch(error){
+            if(error.response.status==302){
+                let the_name=error.response.data.name;
+                console.log(the_name);
+                window.localStorage.setItem("my_name",the_name );
+
+            }
             console.log("erooorrrrrrr",error);
         }
         
@@ -44,6 +52,7 @@ export default function Login(){
     return (
         <>
         {/* TDOO : change this to form */}
+        
         <input type="text" placeholder="username"  name="userName" onChange={loginChg}/>
         <br/>
         <br/>
