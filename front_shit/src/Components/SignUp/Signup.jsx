@@ -50,18 +50,24 @@ export default function Signup(){
     return(
         <>
         {/* TDOO : change this to form */}
-            <input type="text" placeholder="username" name="userNam" onChange={credChg}/>
-            <br/>
-            <br/>
-            <input type="email" placeholder="email" name="userEmail" onChange={credChg}/>
-            <br/>
-            <br/>
+        <div className="input-group mb-3">
+  <span className="input-group-text" id="inputGroup-sizing-default">Username</span>
+  <input type="email" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="userNam" onChange={credChg}/>
+</div>
+            
+            <div className="input-group mb-3">
+  <span className="input-group-text" id="inputGroup-sizing-default">Email</span>
+  <input type="email" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="userEmail" onChange={credChg}/>
+</div>
 
-            <input type="text" placeholder="password" name="userPass" onChange={credChg}/>
-            <br/>
-            <br/>
 
-            <button val="SignUp" onClick={pwnUser}>SignUp</button>
+<div className="input-group mb-3">
+  <span className="input-group-text" id="inputGroup-sizing-default">Password</span>
+  <input type="email" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="userPass" onChange={credChg}/>
+</div>
+            
+<button type="button" className="btn btn-primary btn-sm" onClick={pwnUser}>Sign Up</button>
+
             
         </>
     )

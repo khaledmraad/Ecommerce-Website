@@ -4,6 +4,8 @@ import Signup from "./SignUp/Signup";
 import { BrowserRouter,Routes,Route ,NavLink} from "react-router-dom";
 import Home from "./Home/Home";
 import Admin from "./Admin/Admin";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
 
 

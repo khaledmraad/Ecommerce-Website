@@ -52,14 +52,22 @@ export default function Login(){
     return (
         <>
         {/* TDOO : change this to form */}
+        <div className="container-sm">100% wide until small breakpoint</div>
+<div className="container-md">100% wide until medium breakpoint</div>
+<div className="container-lg">100% wide until large breakpoint</div>
+<div className="container-xl">100% wide until extra large breakpoint</div>
+<div className="container-xxl">100% wide until extra extra large breakpoint</div>
+        <div className="input-group mb-3">
+  <span className="input-group-text" id="inputGroup-sizing-default">Username</span>
+  <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="userName" onChange={loginChg}/>
+</div>
+
+<div className="input-group mb-3">
+  <span className="input-group-text" id="inputGroup-sizing-default">Password</span>
+  <input type="password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="userPass" onChange={loginChg}/>
+</div>
+<button type="button" className="btn btn-primary btn-sm" onClick={checkUser}>LogIn</button>
         
-        <input type="text" placeholder="username"  name="userName" onChange={loginChg}/>
-        <br/>
-        <br/>
-        <input type="password" placeholder="password" name="userPass" onChange={loginChg} />
-        <br/>
-        <br/>
-        <button onClick={checkUser} >LogIn</button>
 
         </>
     )

@@ -100,9 +100,9 @@ def getInfo():
 
     if (db_collection.count_documents( {"ref":json_request["ref"]})==1) :
 
-        return dumps(db_collection.find_one({"ref":json_request["ref"]})),200
+        return dumps(db_collection.find_one({"ref":json_request["ref"]},{ "_id": 0})),200
 
-    return "no ref bro :(",200
+    return "no ref bro :(",404
 
 
 
