@@ -1,29 +1,28 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import React, { useEffect } from "react";
+import useToken from "../useToken";
+import Profile from "./Profile";
+import Login from '../Login/Login';
 import axio from "axios";
+import { useNavigate } from 'react-router-dom';
 
 
-export default function Shop(props){
 
-    async function get_shop_items(){
-        try {
-            await axio.get("http://localhost:5000/get_shop_item")
-            .then((res)=>{
-                console.log(res.data);
-                console.log("kjdfshdf");
-            })
-            }
-            catch(error){
-                console.log("erroorrrrr",error);
-            }
-    }
+export default function Shop() {
+  
+  const navigate = useNavigate();
 
-    useEffect(()=>{
-        get_shop_items();
-        
-    })
+  const redir = () => {
+    navigate('/profile');
+  };
+
 
 
     return (
-        <h1>{window.localStorage.getItem("my_name")}</h1>
-    )
-}
+      <>
+      <h1>this is home </h1>
+      <button onClick={redir}>profile</button>
+      </>
+    );
+  }
+  

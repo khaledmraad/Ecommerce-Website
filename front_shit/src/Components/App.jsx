@@ -1,37 +1,41 @@
-import React, { useState } from "react";
-import Login from "./Login/Login";
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import React, { useEffect } from "react";
+import useToken from "./useToken";
+import Profile from "./Home/Profile"
+import Header from './Header/Header';
+import Login from './Login/Login';
+import axio from "axios";
 import Signup from "./SignUp/Signup";
-import { BrowserRouter,Routes,Route ,NavLink} from "react-router-dom";
 import Home from "./Home/Home";
-import Admin from "./Admin/Admin";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
 
 
-
-export default function App(){
-
+export default function Shop() {
+    const { token, removeToken, setToken } = useToken();
+  
     return (
-        <>
-        <BrowserRouter>
-        <header>
-            <NavLink to="signup" >SignUp</NavLink>
-            <NavLink to="login">LogIn</NavLink>
-            <NavLink to="admin">Admin</NavLink>
-        </header>
-            <main>
-                <Routes>
-                    <Route path="signup" element={<Signup/>} />
-                    <Route path="login" element={<Login/>} />
-                    <Route path="admin" element={<Admin/>} />
-                    <Route path="/" element={<Home/>} />
+      <BrowserRouter>
+        <div className="App">
+          <Header token={removeToken}/>
+          {!token && token!=="" &&token!== undefined?  
+          <>
+          <h1>login</h1>
+          <Login setToken={setToken} />
 
-                    
-
-                </Routes>
-            </main>
-        </BrowserRouter>
-        
-        </>
-    )
-}
+          <h1>signup</h1>
+          <Signup/>
+          </>
+          :(
+            <>
+              <Routes>
+                <Route exact path="/profile" element={<Profile token={token} setToken={setToken}/>}></Route>
+              </Routes>
+            </>
+          )}
+          <Routes>
+          <Route path="/" element={<Home/>} /> 
+          </Routes>
+        </div>
+      </BrowserRouter>
+    );
+  }
+  

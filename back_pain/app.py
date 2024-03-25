@@ -3,10 +3,20 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import json
 from bson.json_util import dumps
+from datetime import datetime, timedelta, timezone
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
+
 
 
 app = Flask(__name__)
 
+app.config["JWT_SECRET_KEY"] = "secret_key"
+
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
+
+jwt = JWTManager(app)
+ 
 cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # client = MongoClient(host='test_mongodb',
@@ -17,6 +27,23 @@ cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 client=MongoClient("mongodb://localhost:27017/")
     
 client_db = client["ecommerce"]
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
 
 
 @app.route('/signup',methods = ['POST'])
@@ -43,25 +70,48 @@ def signup():
     
 
 
-@app.route('/login',methods = ['POST'])
+@app.route('/token',methods = ['POST'])
 def login():
     
-    json_request=json.loads(request.data)
+    userName=request.json.get("username", "")
+    password=request.json.get("password", "")
 
-    if (json_request["userName"]!="" and json_request["userPass"]!="" ):
+    if (userName!="" and password!="" ):
         
         db_collection = client_db["customers"]
 
-        if (db_collection.count_documents( {"userNam":json_request["userName"]})==1) :  
-            if (db_collection.count_documents( {"userNam":json_request["userName"],"userPass":json_request["userPass"]})==1) :
-                return jsonify({"name":json_request["userName"]}),302
-    
-            return "wrong password broo" ,200 
+        if (db_collection.count_documents( {"userNam":userName})==1) :  
+            if (db_collection.count_documents( {"userNam":userName,"userPass":password})==1) :
+                
+                access_token = create_access_token(identity=userName)
 
-        return "user not signed" ,200
+                response = {"access_token":access_token}
+
+                return response,200
+
+                # return jsonify({"name":  str(db_collection.find({"userNam":json_request["userName"],"userPass":json_request["userPass"]})[0]['_id'] )  }),302
+                
+            return "wrong password broo" ,400 
+
+        return "user not signed" ,400
 
     else :
         return "check your input" ,400
+
+@app.route('/profile')
+@jwt_required()
+def my_profile():
+    current_user = get_jwt_identity()
+    print(current_user)
+
+    return "ksljcdn"
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 
 
